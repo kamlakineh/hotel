@@ -29,8 +29,7 @@ export function Foods() {
   }
   useEffect(() => {
     fetchdata();
-    console.log(entries);
-  }, []);
+  }, [fetchdata]);
 
   async function handleDelete(userId) {
     const res = await fetch("/api/blog", {

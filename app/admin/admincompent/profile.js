@@ -20,7 +20,7 @@ export function Profiles() {
   }
   useEffect(() => {
     fetchdata();
-  }, []);
+  }, [fetchdata]);
 
   const handleSave = async (e) => {
     e.preventDefault();

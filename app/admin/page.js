@@ -40,7 +40,7 @@ export default function Admin() {
   }
   useEffect(() => {
     fetchdata();
-  }, []);
+  }, [fetchdata]);
 
   async function handlelogout() {
     sessionStorage.removeItem("isAuthenticated");

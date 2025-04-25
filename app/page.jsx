@@ -131,7 +131,7 @@ export default function Home() {
   }
   useEffect(() => {
     fetchdata();
-  }, []);
+  }, [fetchdata]);
 
   async function handleAvailable() {
     const nowdate = new Date();
