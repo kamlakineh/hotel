@@ -97,13 +97,13 @@ export default function Slider() {
           onClick={prevSlide}
           className="absolute top-[50%] left-[20px] transform -translate-y-1/2 font-bold text-4xl text-gray-600 p-3 bg-white rounded-full shadow-md hover:bg-gray-300 transition"
         >
-          &lt;
+          prev
         </button>
         <button
           onClick={nextSlide}
           className="absolute top-[50%] right-[20px] transform -translate-y-1/2 font-bold text-4xl text-gray-600 p-3 bg-white rounded-full shadow-md hover:bg-gray-300 transition"
         >
-          &gt;
+          next
         </button>
       </div>
     </div>

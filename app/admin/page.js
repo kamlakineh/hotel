@@ -111,6 +111,7 @@ export default function Admin() {
             className="flex gap-x-[10px] items-center justify-center"
           >
             <img
+              alt=""
               src={profile.image}
               className="h-[40px] w-[40px] rounded-full"
             />
@@ -129,7 +130,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            &lt;
+            home
           </button>
           <AddRoom />
         </div>
@@ -140,7 +141,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            &lt;
+            home
           </button>
           <Rooms />
         </div>
@@ -151,7 +152,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            &lt;
+            home
           </button>
           <Foods />
         </div>
@@ -162,7 +163,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            &lt;
+            home
           </button>
           <Custemers />
         </div>
@@ -173,7 +174,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            &lt;
+            home
           </button>
           <Profiles />
         </div>

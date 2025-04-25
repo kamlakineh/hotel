@@ -217,7 +217,7 @@ export default function Home() {
       <Navbar />
       <div className="w-full h-[600px] overflow-hidden relative font-bold">
         <div className="w-full h-[600px] overflow-hidden relative">
-          <img src={imagesideh[sideindex].image} />
+          <img alt="" src={imagesideh[sideindex].image} />
           <p
             ref={sideref}
             className="absolute inset-0 flex items-center justify-center text-white text-[70px] font-bold"
@@ -424,6 +424,7 @@ export default function Home() {
           </p>
           <div className="flex items-center flex-row gap-x-[10px] my-3">
             <img
+              alt=""
               src="/image/owner.jpg"
               className="w-[50px] h-[50px] rounded-full"
             />
@@ -450,7 +451,11 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <img src={state.date[vlau].image} className="w-[400px] h-[450px]" />
+        <img
+          alt=""
+          src={state.date[vlau].image}
+          className="w-[400px] h-[450px]"
+        />
         <div
           ref={reviewRef}
           className="flex-1 flex flex-col justify-around relative right-[10px] text-black z-30"
@@ -458,19 +463,31 @@ export default function Home() {
           <ul
             className={`transition-all duration-[4000ms] flex p-2 bg-gray-300 translate-x-[-14%] items-center ease-out gap-x-[10px] shadow-xl shadow-gray-800`}
           >
-            <img className="w-[70px] h-[70px]" src="/image/hotels1.jpg" />
+            <img
+              alt=""
+              className="w-[70px] h-[70px]"
+              src="/image/hotels1.jpg"
+            />
             <p>Lorem id ipsum dolor sit amet, consectetur adipis</p>
           </ul>
           <ul
             className={`transition-all duration-[4000ms] flex p-2 bg-gray-300 translate-x-[-14%] items-center ease-out gap-x-[10px] shadow-xl shadow-gray-800`}
           >
-            <img className="w-[70px] h-[70px]" src="/image/hotels2.jpg" />
+            <img
+              alt=""
+              className="w-[70px] h-[70px]"
+              src="/image/hotels2.jpg"
+            />
             <p>Lorem id ipsum dolor sit amet, consectetur adipis</p>
           </ul>
           <ul
             className={`transition-all duration-[4000ms] flex p-2 bg-gray-300 translate-x-[-14%] items-center ease-out gap-x-[10px] shadow-xl shadow-gray-800`}
           >
-            <img className="w-[70px] h-[70px]" src="/image/hotels3.jpg" />
+            <img
+              alt=""
+              className="w-[70px] h-[70px]"
+              src="/image/hotels3.jpg"
+            />
             <p>Lorem id ipsum dolor sit amet, consectetur adipis</p>
           </ul>
         </div>
@@ -486,7 +503,11 @@ export default function Home() {
               key={i}
               className="flex-1 mx-[10px] text-black border-2 border-gray-900"
             >
-              <img className="h-[330px] hover:scale-[1.05]" src={tem.image} />
+              <img
+                alt=""
+                className="h-[330px] hover:scale-[1.05]"
+                src={tem.image}
+              />
               <p className="text-[20px] font-bold my-[10px]">{tem.name}</p>
               <p>{tem.role}</p>
             </div>

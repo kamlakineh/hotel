@@ -202,7 +202,7 @@ export default function ReceptionPage() {
                 {notif.numFamily && <p>Family Number: {notif.numFamily}</p>}
                 <p>Room choose: {notif.rNumber}</p>
                 <p>
-                  Check date: <strong>{notif.checkIn}</strong> -&gt;{" "}
+                  Check date: <strong>{notif.checkIn}</strong> -{" "}
                   <strong>{notif.checkOut}</strong>
                 </p>
                 <button
@@ -223,6 +223,7 @@ export default function ReceptionPage() {
         <div className="flex items-center gap-2">
           <div className="relative" onClick={() => setNotifpop(!notipop)}>
             <img
+              alt=""
               width={30}
               height={30}
               className="bg-amber-800 rounded-[50%] p-2 "
@@ -378,7 +379,7 @@ export default function ReceptionPage() {
               new
             </span>
           )}
-          <img src="image/message.svg" height={60} width={60} />
+          <img alt="" src="image/message.svg" height={60} width={60} />
         </div>
       </button>
       {messagepop && (

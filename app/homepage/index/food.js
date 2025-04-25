@@ -12,6 +12,7 @@ export default function Food() {
             </p>
           </div>
           <img
+            alt=""
             width={800}
             height={700}
             className="hover:scale-[1.05]"

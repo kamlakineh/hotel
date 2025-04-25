@@ -89,6 +89,7 @@ export function Profiles() {
           <label htmlFor="imageUpload" className="cursor-pointer">
             {entries.length > 0 && entries[0].image ? (
               <img
+                alt=""
                 src={entries[0].image}
                 className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
               />

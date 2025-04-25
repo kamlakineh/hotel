@@ -39,6 +39,7 @@ export default function Service() {
             <div key={room.id}>
               <ul className="overflow-hidden w-100 flex flex-col gap-y-[10px] text-[20px] p-[15px] bg-gray-300 shadow-gray-900 shadow-2xl">
                 <img
+                  alt=""
                   src={room.roomImage1}
                   className="hover:scale-125 duration-[1500ms]"
                 />
@@ -58,7 +59,7 @@ export default function Service() {
                   href={`/homepage/service/${room.id}`}
                   className="text-white bg-gray-950 py-2 px-2"
                 >
-                  view detail &gt;
+                  view detail
                 </Link>
               </ul>
             </div>

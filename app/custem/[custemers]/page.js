@@ -39,6 +39,7 @@ export default function Hotel({ params }) {
   useEffect(() => {
     fetchdata();
   }, []);
+
   useEffect(() => {
     messagesEndRef1.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
