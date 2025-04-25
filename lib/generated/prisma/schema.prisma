@@ -1,0 +1,74 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Entry {
+  id         Int      @unique @default(autoincrement())
+  roomNumber String
+  roomType   String
+  roomFor    String
+  roomDetail String   @db.Text
+  roomPrice  Float
+  roomImage1 String
+  roomImage2 String
+  roomImage3 String
+  roomFloor  Int
+  createdAt  DateTime @default(now())
+  tack       Boolean  @default(false)
+}
+
+model Profileadmin {
+  id       Int     @id @default(autoincrement())
+  name     String
+  email    String  @unique
+  phone    String
+  password String
+  image    String
+  auth     Boolean @default(false)
+}
+
+model custemer {
+  id          String        @id @default(uuid())
+  fName       String
+  email       String
+  address     String
+  coutery     String
+  numbers     String
+  numFamily   String
+  rNumber     String
+  checkIn     String
+  checkOut    String
+  access      Boolean       @default(false)
+  chatMessage chatMessage[]
+}
+
+model chatMessage {
+  id         String    @id @default(uuid())
+  content    String
+  employId   String
+  custemer   custemer? @relation(fields: [custemerId], references: [id], onDelete: Cascade)
+  custemerId String?
+  from       String
+  times      String
+  dates      String
+}
+
+model blogs {
+  id     Int    @id @default(autoincrement())
+  image  String
+  titel  String
+  detail String
+  date   String
+}

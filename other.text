@@ -1,0 +1,282 @@
+"use client";
+import Head from "next/head";
+import { useState,useEffect,useRef } from "react";
+import prisma from "@/lib/prisma";
+
+// import { useState,useEffect } from "react";
+export default async function Hotel({ params }) {
+const name = params.custemer;
+const [messages, setMessages] = useState([])
+const [message1, setMessage1] = useState('')
+const socketRef = useRef(null)
+const messagesEndRef1 = useRef(null)
+const custem = await prisma.custemer.findMany({
+  where: {
+    rNumber: name,
+  },
+});
+const rooms = await prisma.Entry.findMany({
+  where: {
+    roomNumber: name,
+  },
+});
+
+useEffect(() => {
+  const socket = io('http://localhost:3000', {
+    transports: ['websocket', 'polling']
+  })
+  socketRef.current = socket
+  socket.on('connect', () => {
+    console.log('Socket connected:', socket.id)
+    const messagesFetch=async()=>{
+      const mess=await prisma.EmpChatCus.findMany({
+        where:{
+          id:custem[0].id
+        }
+      })
+      setMessage1(mess)
+    }
+    messagesFetch();
+  })
+  
+  socket.on('connect_error', (err) => {
+    console.error('Socket connection error:', err.message)
+    setSocketConnected(false)
+  })
+
+  socket.on('receive-message', (newMessage) => {
+    setMessages(prev => [...prev, newMessage])
+  })
+  return () => {
+    console.log('Cleaning up socket...')
+    socket.disconnect()
+    socketRef.current = null
+  }
+}, [])
+useEffect(() => {
+  messagesEndRef1.current?.scrollIntoView({ behavior: 'smooth' })
+}, [messages])
+
+const sendMessage2 = async (e) => {
+  e.preventDefault()
+  if (!message1.trim() || !socketRef.current) return
+  
+  try {
+    const idEmploy=await prisma.employ.findMany();
+    const response = await fetch('/api/messages', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        content: message1,
+        custemerId:custem[0].id,
+        employId:idEmploy[0].id,
+        from:"client"
+
+      })
+    })
+    
+    const newMessage = await response.json()
+    socketRef.current.emit('send-message', newMessage)
+    setMessage1('')
+  } catch (error) {
+    console.error('Error sending message:', error)
+  }
+}
+
+  return (
+    <div className="mx-[10px] p-6 space-y-6 bg-gray-100 min-h-screen">
+      <Head>
+        <title>Hotel Page {name}</title>
+      </Head>
+
+      {/* Header Section */}
+      <div className="flex justify-between items-center bg-gray-700 text-white p-4 rounded-lg shadow-md">
+        <h1 className="text-2xl font-bold text-white">The Hotel Room-{rooms[0].roomNumber}</h1>
+        <div className="flex items-center space-x-2">
+          <span className="font-semibold">{custem[0].fName}</span>
+          <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+            👤
+          </div>
+        </div>
+      </div>
+
+      {/* Main Layout */}
+      <div className="grid grid-cols-4 gap-6">
+        {/* Sidebar - Hotel Images */}
+        <div className="col-span-1 space-y-4">
+          <div className="w-full bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+            <img
+              src={rooms[0].roomImage1}
+              alt="Hotel Image 1"
+              width={300}
+              height={600}
+              className="rounded-lg"
+            />
+          </div>
+          <div className="w-full h-40 bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+            <img
+              src={rooms[0].roomImage2}
+              alt="Hotel Image 2"
+              width={300}
+              height={300}
+              className="rounded-lg"
+            />
+          </div>
+          <div className="w-full h-40 bg-gray-300 rounded-lg flex items-center justify-center overflow-hidden">
+            <img
+              src={rooms[0].roomImage3}
+              alt="Hotel Image 2"
+              width={300}
+              height={300}
+              className="rounded-lg"
+            />
+          </div>
+        </div>
+
+        {/* Content Section */}
+        <div className="col-span-3 space-y-6">
+          {/* Hotel History & Blogs */}
+          <div className="bg-gray-300 p-6 rounded-lg shadow-md">
+            {/* Hotel History */}
+            <h2 className="text-xl font-semibold">Hotel History</h2>
+            <p className="text-gray-700 mt-2">
+              Established in 1995, our hotel has been a symbol of luxury and
+              comfort. Over the years, we have hosted thousands of guests,
+              offering them world-class services and an unforgettable
+              experience.
+            </p>
+            <p className="text-gray-700 mt-2">
+              With its stunning architecture and top-tier amenities, the hotel
+              has won multiple awards in the hospitality industry.
+            </p>
+
+            {/* Blogs & Info */}
+            <h2 className="text-xl font-semibold mt-6">Blogs & Info</h2>
+            <div className="grid grid-cols-2 gap-4 mt-2">
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <h3 className="font-semibold">5-Star Dining Experience</h3>
+                <p className="text-gray-600 text-sm">
+                  Discover the world-class cuisines served at our hotel’s
+                  top-rated restaurants.
+                </p>
+              </div>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <h3 className="font-semibold">Luxury Spa & Wellness</h3>
+                <p className="text-gray-600 text-sm">
+                  Experience relaxation at our premium spa with the best
+                  treatments.
+                </p>
+              </div>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <h3 className="font-semibold">Conference & Business Halls</h3>
+                <p className="text-gray-600 text-sm">
+                  Our modern business halls are perfect for meetings and
+                  conferences.
+                </p>
+              </div>
+              <div className="bg-gray-100 p-3 rounded-lg">
+                <h3 className="font-semibold">Exploring Local Attractions</h3>
+                <p className="text-gray-600 text-sm">
+                  A guide to must-visit attractions near our hotel.
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Bottom Layout - Room Info & Chat */}
+          <div className="grid grid-cols-2 gap-6">
+            {/* Room Information */}
+            <div className="bg-gray-200 p-6 rounded-lg shadow-md text-black">
+              <h2 className="text-xl font-semibold">Room Info</h2>
+              <p>Room number: {rooms[0].roomNumber}</p>
+              <p>Your Room Type: {rooms[0].roomType}</p>
+              <p>price: {rooms[0].roomPrice}</p>
+
+              <p className="text-gray-700 mt-2">
+                Our custem come with premium bedding, air conditioning, free
+                Wi-Fi, and stunning city views.{rooms[0].roomDetail}
+              </p>
+            </div>
+
+            {/* Chat with Reception */}
+            <div className="bg-gray-400 p-6 rounded-lg shadow-md">
+              <h2 className="text-xl font-semibold">Chat with Reception</h2>
+                {messages.map(msg => (
+                  <div 
+                    key={msg.id} 
+                  >
+                    <div 
+                      className={`p-3 rounded-xl max-w-[80%] ${
+                        msg.from === "client" 
+                          ? 'bg-blue-500 text-white' 
+                          : 'bg-gray-100 text-gray-800'
+                      }`}
+                    >
+                      <div className="text-xs font-medium mb-1">
+                        {msg.from === "client" ? 'You' : "reciption"}
+                      </div>
+                      <div>{msg.content}</div>
+                    </div>
+                  </div>
+                ))}
+                <div ref={messagesEndRef1} />
+              <form className="space-y-4 mt-2" onSubmit={sendMessage2}>
+                <input
+                  type="text"
+                  value={message1}
+                  onChange={(e)=>setMessage1(e.target.value)}
+                  placeholder="Type your message..."
+                  className="w-full p-2 border rounded-lg"
+                />
+                <button className="w-full bg-blue-500 text-white py-2 rounded-lg hover:bg-blue-600 transition">
+                  Send
+                </button>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+"use client"
+import Image from "next/image";
+import Head from "next/head";
+import { useEffect,useState,useRef } from "react";
+import { io } from "socket.io-client";
+// import { useState,useEffect } from "react";
+export default function Hotel({ params }) {
+  const [entries,setEntries]=useState([])
+  const name = params.custemers;
+
+  async function fetchdata(){
+    const req=await fetch("/api/custemer//get")
+    const data=await req.json();
+    console.log(data);
+    setEntries(data);
+  }
+  useEffect(()=>{
+    fetchdata();
+  },[])
+  
+ 
+  // const rooms=room.filter((r)=>r.roomNumber==name)
+  // const custem=customer.filter((c)=>c.rNumber==name)
+  return (
+    <div>hi {name}</div>
+  )
+  
+}

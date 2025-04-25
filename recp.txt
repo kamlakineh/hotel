@@ -1,0 +1,497 @@
+"use client";
+
+import { useState,useEffect } from "react";
+import { io } from 'socket.io-client'
+
+export default function ReceptionPage() {
+  const [messages, setMessages] = useState([])
+  const [message2, setMessage2] = useState('')
+  const socketRef = useRef(null)
+  const messagesEndRef2 = useRef(null)
+  const [input,setInput]=useState("");
+  const [entries,setEntries]=useState([])
+  const [notification, setNotification] = useState(null)
+  useEffect(() => {
+    const socket = io('http://localhost:3000', {
+      reconnection: true,
+      reconnectionAttempts: 5
+    })
+    socket.on('new-notification', (message) => {
+      setNotification(message)
+    })
+    return () => {
+      socket.disconnect()
+    }
+  }, [])
+  
+  async function fetchdata(){
+    const res=await fetch("/api/room/get");
+    const date=await res.json();
+    setEntries(date)
+  }
+  useEffect(()=>{
+    fetchdata();
+  },[])
+  
+//chat part is blow
+  useEffect(() => {
+    const socket = io('http://localhost:3000', {
+      transports: ['websocket', 'polling']
+    })
+    socketRef.current = socket
+    socket.on('connect', () => {
+      console.log('Socket connected:', socket.id)
+      const messagesFetch=async()=>{
+        const mess=await prisma.EmpChatCus.findMany()
+        setMessage2(mess)
+      }
+      messagesFetch();
+    })
+    socket.on('connect_error', (err) => {
+      console.error('Socket connection error:', err.message)
+      setSocketConnected(false)
+    })
+  
+    socket.on('receive-message', (newMessage) => {
+      setMessages(prev => [...prev, newMessage])
+    })
+    return () => {
+      console.log('Cleaning up socket...')
+      socket.disconnect()
+      socketRef.current = null
+    }
+  }, [])
+  useEffect(() => {
+    messagesEndRef2.current?.scrollIntoView({ behavior: 'smooth' })
+  }, [messages])
+  
+  const sendMessage2 = async (custem) => {
+    e.preventDefault()
+    if (!message2.trim() || !socketRef.current) return
+    
+    try {
+      const idEmploy=await prisma.employ.findMany();
+      const response = await fetch('/api/messages', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          content: message2,
+          custemerId:custem,
+          employId:idEmploy[0].id,
+          from:"employee"
+  
+        })
+      })
+      
+      const newMessage = await response.json()
+      socketRef.current.emit('send-message', newMessage)
+      setMessage2('')
+    } catch (error) {
+      console.error('Error sending message:', error)
+    }
+  }
+  async function handlenewclient(){
+    const custdata=new FormData()
+    custdata.append("fName",notification.fName)
+    custdata.append("email",notification.email)
+    custdata.append("address",notification.address)
+    custdata.append("coutery",notification.coutery)
+    custdata.append("numbers",notification.numbers)
+    custdata.append("numFamily",notification.numFamily)
+    custdata.append("rNumber",notification.rNumber)
+    custdata.append("checkIn",notification.checkIn)
+    custdata.append("checkOut",notification.checkOut)
+    try{
+      const res = await fetch("/api/custemer/add", {
+        method: "POST",
+        body: custdata,
+      });
+      if(res.ok){
+        setNotification(false);
+      }else{
+        alert("some thing is wronge")
+      }
+    }catch (error) {
+      console.error("Error submitting form:", error);
+    }
+
+  }
+
+  return (
+    <div className="min-h-screen bg-gray-100 p-4 flex flex-col">
+      {/* notification part the pop up */}
+      {notification&&
+      <div className="absolute top-[20px] right-[20px] bg-orange-900 text-white p-[20px] rounded-3xl justify-center">
+        <p className="text-[20px] text-blue-400 underline">New notification form client</p>
+        <p>Name: {notification.fName}</p>
+        <p>Email: {notification.email}</p>
+        <p>Address: {notification.address}</p>
+        <p>Number: {notification.numbers}</p>
+        <p>country: {notification.coutery}</p>
+        {notification.numFamily&&
+        <p>Family Number: {notification.numFamily}</p>
+        }
+        <p>Room choose: {notification.rNumber}</p>
+        <p>check date <strong>{notification.checkIn}</strong> - &gt; <strong>{notification.checkOut}</strong></p>
+        <button className="bg-amber-950 p-[10px] text-amber-50 text-[20px] w-full rounded-3xl" onClick={()=>handlenewclient()}>ok</button>
+      </div>
+      }
+
+
+      {/* Header */}
+      <div className="bg-gray-800 text-white p-4 rounded-lg flex justify-between items-center">
+        <h1 className="text-xl font-bold">Hotel Paradise</h1>
+        <div className="flex items-center gap-2">
+          <span>Employee Name</span>
+          <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+            👤
+          </div>
+        </div>
+      </div>
+
+      <div className="grid grid-cols-4 text-black gap-4 mt-4">
+        {/* Left Section */}
+        <div className="col-span-1 bg-gray-200 p-4 rounded-lg w-80">
+          <h2 className="font-bold mb-2">New Customer</h2>
+          <div className="bg-white p-2 rounded-lg shadow">
+            <table className="w-full text-sm">
+              <thead>
+                <tr>
+                  <th className="text-left">Name</th>
+                  <th className="text-left">Email</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>John</td>
+                  <td>john@email.com</td>
+                </tr>
+                <tr>
+                  <td>Ele</td>
+                  <td>lk</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-4 bg-white p-2 rounded-lg shadow">
+            <h3 className="font-bold">Chat Admin</h3>
+            <p className="text-sm">How many customers today?</p>
+            <div className="text-lg font-bold">30 Customers</div>
+            <input
+              type="text"
+              className="w-full p-2 border rounded mt-2"
+              placeholder="Enter message"
+            />
+            <button
+              className="w-full bg-gray-800 text-white p-2 mt-2 rounded"
+            >
+              Send
+            </button>
+          </div>
+        </div>
+
+        {/* Middle Section */}
+        <div className="col-span-2 grid grid-cols-1 gap-4 bg-gray-200 p-1 rounded-lg">
+          <div className="bg-white p-4 rounded-lg shadow">
+            <h2 className="font-bold mb-2">Room Details</h2>
+            
+            {/* Scrollable container with a fixed height */}
+            <div className="overflow-y-auto h-[200px] border border-gray-300 rounded-lg">
+            <table className="w-full text-sm">
+              <thead className="bg-gray-500 text-white top-0">
+                <tr>
+                  <th className="text-left font-bold text-[18px] p-2">Room Number</th>
+                  <th className="text-left font-bold text-[18px] p-2">Type</th>
+                  <th className="text-left font-bold text-[18px] p-2">For</th>
+                  <th className="text-left font-bold text-[18px] p-2">Details</th>
+                  <th className="text-left font-bold text-[18px] p-2">Price ($)</th>
+                  <th className="text-left font-bold text-[18px] p-2">Floor</th>
+                  <th className="text-left font-bold text-[18px] p-2">Taken</th>
+                </tr>
+              </thead>
+              <tbody>
+                {entries.map((room) => (
+                  <tr key={room.id} className="border-b hover:bg-gray-100 text-black">
+                    <td className="p-3">{room.roomNumber}</td>
+                    <td className="p-3">{room.roomType}</td>
+                    <td className="p-3">{room.roomFor}</td>
+                    <td className="p-3 truncate">{room.roomDetail}</td>
+                    <td className="p-3">${room.roomPrice}</td>
+                    <td className="p-3">{room.roomFloor}</td>
+                    <td className={room.tack ? "text-green-500" : "text-red-600"}>
+                      {room.tack ? "It’s taken" : "X Not taken"}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+          <div className="bg-white p-4 rounded-lg shadow">
+            <h2 className="font-bold mb-2">Current Customer Chat</h2>
+            <div className="h-64 overflow-y-auto">
+              {messages.map((customer, index) => (
+                <ul
+                  key={index}
+                  className="bg-gray-100 p-2 rounded-lg shadow mb-2 cursor-pointer"
+                >
+                    <div>
+                      {customer.content}
+                    </div>
+                  <div className="mt-2 p-2 border-t">
+                    <input
+                      type="text"
+                      className="w-full p-2 border rounded mt-2"
+                      placeholder="Enter message"
+                      value={input}
+                      onChange={(e) => setInput(e.target.value)}
+                    />
+                    <button
+                      className="w-full bg-gray-800 text-white p-2 mt-2 rounded"
+                      onClick={()=>sendMessage2(customer.custemerId)}
+                    >
+                      Send
+                    </button>
+                  </div>
+                
+              </ul>
+              ))}
+            </div>
+          </div>
+        </div>
+
+        {/* Right Section - Additional Images */}
+        <div className="col-span-1 bg-gray-200 p-4 rounded-lg">
+          <img
+            src="/image/room1.jpg"
+            alt="Hotel View"
+            className="w-full h-40 rounded-lg mb-4"
+          />
+          <img
+            src="/image/room2.jpg"
+            alt="Hotel Reception"
+            className="w-full h-40 rounded-lg"
+          />
+        </div>
+      </div>
+    </div>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+other
+
+
+
+
+
+
+
+
+
+
+
+
+"use client";
+import { useState, useEffect, useRef, use } from "react";
+import { io } from "socket.io-client";
+
+export default function ReceptionPage() {
+  const [selectedChat, setSelectedChat] = useState(false);
+  const [entries, setEntries] = useState([]);
+  const [notification, setNotification] = useState(null);
+  async function fetchdata() {
+    const res = await fetch("/api/room/get");
+    const date = await res.json();
+    setEntries(date);
+  }
+  useEffect(() => {
+    fetchdata();
+  }, []);
+
+  async function handlenewclient() {
+    const custdata = new FormData();
+    custdata.append("fName", notification.fName);
+    custdata.append("email", notification.email);
+    custdata.append("address", notification.address);
+    custdata.append("coutery", notification.coutery);
+    custdata.append("numbers", notification.numbers);
+    custdata.append("numFamily", notification.numFamily);
+    custdata.append("rNumber", notification.rNumber);
+    custdata.append("checkIn", notification.checkIn);
+    custdata.append("checkOut", notification.checkOut);
+    try {
+      const res = await fetch("/api/custemer/add", {
+        method: "POST",
+        body: custdata,
+      });
+      if (res.ok) {
+        setNotification(false);
+      } else {
+        alert("some thing is wronge");
+      }
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  }
+  return (
+    <div className="min-h-screen bg-gray-100 p-4 flex flex-col">
+      {/* notification part the pop up */}
+      {notification && (
+        <div className="absolute top-[20px] right-[20px] bg-orange-900 text-white p-[20px] rounded-3xl justify-center">
+          <p className="text-[20px] text-blue-400 underline">
+            New notification form client
+          </p>
+          <p>Name: {notification.fName}</p>
+          <p>Email: {notification.email}</p>
+          <p>Address: {notification.address}</p>
+          <p>Number: {notification.numbers}</p>
+          <p>country: {notification.coutery}</p>
+          {notification.numFamily && (
+            <p>Family Number: {notification.numFamily}</p>
+          )}
+          <p>Room choose: {notification.rNumber}</p>
+          <p>
+            check date <strong>{notification.checkIn}</strong> - &gt;{" "}
+            <strong>{notification.checkOut}</strong>
+          </p>
+          <button
+            className="bg-amber-950 p-[10px] text-amber-50 text-[20px] w-full rounded-3xl"
+            onClick={() => handlenewclient()}
+          >
+            ok
+          </button>
+        </div>
+      )}
+
+      {/* Header */}
+      <div className="bg-gray-800 text-white p-4 rounded-lg flex justify-between items-center">
+        <h1 className="text-xl font-bold">Hotel Paradise</h1>
+        <div className="flex items-center gap-2">
+          <span>Employee Name</span>
+          <div className="w-10 h-10 bg-gray-300 rounded-full flex items-center justify-center">
+            👤
+          </div>
+        </div>
+      </div>
+      <div className="bg-gray-500">
+        <div className="bg-gray-500 w-full flex">
+          {/* room infomation */}
+          <div className="bg-gray-300 p-2 w-[50%] rounded-lg m-3">
+            <h1 className="bg-gray-800 text-white h-[60px] flex items-center px-4 text-lg font-semibold">
+              Customer Details
+            </h1>
+            <div className="overflow-y-auto h-[200px] max-w-full">
+              <table className="w-full text-sm table-auto">
+                <thead className="bg-gray-500 text-white sticky top-0">
+                  <tr>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Room Number
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Type
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">For</th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Price ($)
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Floor
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Taken
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((room) => (
+                    <tr
+                      key={room.id}
+                      className="border-b hover:bg-gray-100 text-black"
+                    >
+                      <td className="p-3">{room.roomNumber}</td>
+                      <td className="p-3">{room.roomType}</td>
+                      <td className="p-3">{room.roomFor}</td>
+                      <td className="p-3">${room.roomPrice}</td>
+                      <td className="p-3">{room.roomFloor}</td>
+                      <td
+                        className={
+                          room.tack ? "text-green-500" : "text-red-600"
+                        }
+                      >
+                        {room.tack ? "It’s taken" : "X Not taken"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          {/* custemer information */}
+          <div className="bg-gray-300 p-2 w-[50%] rounded-lg m-3">
+            <h1 className="bg-gray-800 text-white h-[60px] flex items-center px-4 text-lg font-semibold">
+              Customer Details
+            </h1>
+            <div className="overflow-y-auto h-[200px] max-w-full">
+              <table className="w-full text-sm table-auto">
+                <thead className="bg-gray-500 text-white sticky top-0">
+                  <tr>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Room Number
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Type
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">For</th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Price ($)
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Floor
+                    </th>
+                    <th className="text-left font-bold text-[16px] p-2">
+                      Taken
+                    </th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {entries.map((room) => (
+                    <tr
+                      key={room.id}
+                      className="border-b hover:bg-gray-100 text-black"
+                    >
+                      <td className="p-3">{room.roomNumber}</td>
+                      <td className="p-3">{room.roomType}</td>
+                      <td className="p-3">{room.roomFor}</td>
+                      <td className="p-3">${room.roomPrice}</td>
+                      <td className="p-3">{room.roomFloor}</td>
+                      <td
+                        className={
+                          room.tack ? "text-green-500" : "text-red-600"
+                        }
+                      >
+                        {room.tack ? "It’s taken" : "X Not taken"}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+        <div></div>
+      </div>
+    </div>
+  );
+}
