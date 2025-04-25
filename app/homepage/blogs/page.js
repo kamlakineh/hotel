@@ -1,6 +1,7 @@
 "use client";
 
 import useBlogForm from "@/hook/useBlogForm";
+import Image from "next/image";
 
 export default function Blogs() {
   const { blogstore } = useBlogForm();
@@ -11,7 +12,7 @@ export default function Blogs() {
         <p className="absolute text-[240px] font-bold text-gray-900 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           Blogs
         </p>
-        <img
+        <Image
           className="h-[400px] opacity-70 w-full"
           src="/image/hotel/hol5.jpeg"
           alt="Blog banner"
@@ -25,7 +26,7 @@ export default function Blogs() {
             key={blog.id}
             className="flex flex-col  text-black mx-[10px] border-3 border-gray-900 p-[10px]"
           >
-            <img
+            <Image
               className="h-[200px] w-[260px] object-cover"
               src={blog.image}
               alt={blog.titel}

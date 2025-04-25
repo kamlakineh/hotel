@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import gsap from "gsap";
 
 export default function Home() {
@@ -20,7 +21,7 @@ export default function Home() {
         <p className="absolute text-[240px] font-bold text-gray-900 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           contact
         </p>
-        <img
+        <Image
           className="h-[400px] opacity-70 w-full"
           src="/image/hotel/hol4.jpeg"
           alt="Blog banner"

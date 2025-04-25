@@ -9,6 +9,7 @@ import { Custemers } from "./admincompent/custem";
 import { Profiles } from "./admincompent/profile";
 import { useRouter } from "next/navigation";
 import Loader from "@/constants/loading";
+import Image from "next/image";
 
 export default function Admin() {
   const [buttonview, setButtonview] = useState("");
@@ -110,7 +111,7 @@ export default function Admin() {
             key={i}
             className="flex gap-x-[10px] items-center justify-center"
           >
-            <img
+            <Image
               alt=""
               src={profile.image}
               className="h-[40px] w-[40px] rounded-full"

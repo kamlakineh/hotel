@@ -9,7 +9,7 @@ import Food from "./homepage/index/food";
 import Navbar from "./homepage/index/navbar";
 import Loader from "@/constants/loading";
 import { team, descripiton, imagesideh } from "@/constants/item";
-
+import Image from "next/image";
 export default function Home() {
   const [isVisible, setIsVisible] = useState(false);
   const [isVisible1, setIsVisible1] = useState(false);
@@ -217,7 +217,7 @@ export default function Home() {
       <Navbar />
       <div className="w-full h-[600px] overflow-hidden relative font-bold">
         <div className="w-full h-[600px] overflow-hidden relative">
-          <img alt="" src={imagesideh[sideindex].image} />
+          <Image alt="" src={imagesideh[sideindex].image} />
           <p
             ref={sideref}
             className="absolute inset-0 flex items-center justify-center text-white text-[70px] font-bold"
@@ -311,7 +311,7 @@ export default function Home() {
           <div
             className={`relative group transition-transform duration-[1500ms] ease-out transform text-white text-xl font-bold rounded-lg shadow-lg`}
           >
-            <img
+            <Image
               src="/image/hotel/hol2.jpeg"
               alt="image"
               className="h-[500px] w-[500px]"
@@ -375,7 +375,7 @@ export default function Home() {
             </button>
           </Link>
         </div>
-        <img
+        <Image
           src="/image/hotel.jpg"
           alt="image"
           className="w-full h-[600px] opacity-60"
@@ -423,7 +423,7 @@ export default function Home() {
             {state.date[vlau].review}
           </p>
           <div className="flex items-center flex-row gap-x-[10px] my-3">
-            <img
+            <Image
               alt=""
               src="/image/owner.jpg"
               className="w-[50px] h-[50px] rounded-full"
@@ -451,7 +451,7 @@ export default function Home() {
             </button>
           </div>
         </div>
-        <img
+        <Image
           alt=""
           src={state.date[vlau].image}
           className="w-[400px] h-[450px]"
@@ -463,7 +463,7 @@ export default function Home() {
           <ul
             className={`transition-all duration-[4000ms] flex p-2 bg-gray-300 translate-x-[-14%] items-center ease-out gap-x-[10px] shadow-xl shadow-gray-800`}
           >
-            <img
+            <Image
               alt=""
               className="w-[70px] h-[70px]"
               src="/image/hotels1.jpg"
@@ -473,7 +473,7 @@ export default function Home() {
           <ul
             className={`transition-all duration-[4000ms] flex p-2 bg-gray-300 translate-x-[-14%] items-center ease-out gap-x-[10px] shadow-xl shadow-gray-800`}
           >
-            <img
+            <Image
               alt=""
               className="w-[70px] h-[70px]"
               src="/image/hotels2.jpg"
@@ -483,7 +483,7 @@ export default function Home() {
           <ul
             className={`transition-all duration-[4000ms] flex p-2 bg-gray-300 translate-x-[-14%] items-center ease-out gap-x-[10px] shadow-xl shadow-gray-800`}
           >
-            <img
+            <Image
               alt=""
               className="w-[70px] h-[70px]"
               src="/image/hotels3.jpg"
@@ -503,7 +503,7 @@ export default function Home() {
               key={i}
               className="flex-1 mx-[10px] text-black border-2 border-gray-900"
             >
-              <img
+              <Image
                 alt=""
                 className="h-[330px] hover:scale-[1.05]"
                 src={tem.image}

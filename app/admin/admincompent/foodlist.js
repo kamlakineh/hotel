@@ -1,7 +1,7 @@
 "use client";
 import useBlogForm from "@/hook/useBlogForm";
 import { useState, useEffect } from "react";
-
+import Image from "next/image";
 export function Foods() {
   const [entries, setEntries] = useState([]);
   const {
@@ -78,7 +78,7 @@ export function Foods() {
               className="border-1 border-gray-500 p-2 text-white w-full"
             >
               {blog.image && (
-                <img src={blog.image} width={200} height={200} alt="Blog" />
+                <Image src={blog.image} width={200} height={200} alt="Blog" />
               )}
               <p
                 className="text-[30px] cursor-pointer"
