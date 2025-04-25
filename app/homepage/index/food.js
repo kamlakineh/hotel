@@ -1,3 +1,4 @@
+import Image from "next/image";
 export default function Food() {
   return (
     <div className="bg-gray-500 py-[30px] my-[20px]">
@@ -7,11 +8,11 @@ export default function Food() {
             <p className="text-[60px] font-bold text-black">our foods</p>
             <p className="w-[400px] text-justify text-[17px] text-black">
               Our system includes a real-time kitchen queue that uses
-              motion-based updates to track each customer's order from placement
-              to delivery
+              motion-based updates to track each customer&apos;s order from
+              placement to delivery
             </p>
           </div>
-          <img
+          <Image
             alt=""
             width={800}
             height={700}

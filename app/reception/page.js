@@ -1,7 +1,7 @@
 "use client";
 import { useState, useEffect, useRef, use } from "react";
 import { io } from "socket.io-client";
-
+import Image from "next/image";
 export default function ReceptionPage() {
   const [custdatas, setCustdatas] = useState([]);
   const [scus, setScus] = useState("");
@@ -222,7 +222,7 @@ export default function ReceptionPage() {
         <h1 className="text-xl font-bold">Hotel Paradise</h1>
         <div className="flex items-center gap-2">
           <div className="relative" onClick={() => setNotifpop(!notipop)}>
-            <img
+            <Image
               alt=""
               width={30}
               height={30}
@@ -379,7 +379,7 @@ export default function ReceptionPage() {
               new
             </span>
           )}
-          <img alt="" src="image/message.svg" height={60} width={60} />
+          <Image alt="" src="image/message.svg" height={60} width={60} />
         </div>
       </button>
       {messagepop && (

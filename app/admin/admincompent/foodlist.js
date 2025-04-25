@@ -84,7 +84,7 @@ export function Foods() {
                 className="text-[30px] cursor-pointer"
                 onClick={() => handlelistdown(blog.id)}
               >
-                "{blog.titel}"
+                {blog.titel}
               </p>
               <p className="text-[15px] text-justify break-words">
                 {blog.detail}
