@@ -4,8 +4,9 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
-    "start": "prisma generate && NODE_ENV=production node server.js",
+    "generate": "prisma generate",
+    "build": "npm run generate && next build",
+    "start": "NODE_ENV=production node server.js",
     "postinstall": "prisma generate"
   },
   "dependencies": {
