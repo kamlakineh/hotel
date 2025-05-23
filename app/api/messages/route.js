@@ -1,4 +1,4 @@
-import prisma from "@/lib/generated/prisma"; // Adjust path to your generated Prisma client
+import prisma from "@/lib/prisma";
 
 export async function POST(req) {
   try {

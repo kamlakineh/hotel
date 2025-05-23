@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from "react";
 import { io } from "socket.io-client";
-import Image from "next/image";
 
 export default function Page({ params }) {
   const [resolvedParams, setResolvedParams] = useState(null);
@@ -86,7 +85,7 @@ export default function Page({ params }) {
       {/* LEFT SIDE */}
       <div className="grid justify-start flex-2">
         {/* MAIN IMAGE */}
-        <Image
+        <img
           src={
             imageList[index]?.startsWith("http")
               ? imageList[index]
@@ -98,10 +97,10 @@ export default function Page({ params }) {
 
         {/* THUMBNAILS */}
         <div className="flex p-4 gap-x-[30px]">
-          {imageList.map((Image, i) => (
-            <Image
+          {imageList.map((img, i) => (
+            <img
               key={i}
-              src={Image?.startsWith("http") ? Image : `/uploads/${Image}`}
+              src={img?.startsWith("http") ? img : `/uploads/${img}`}
               width={100}
               height={100}
               alt={`Thumbnail ${i}`}

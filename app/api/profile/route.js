@@ -1,7 +1,6 @@
 import { NextResponse } from "next/server";
 import { uploadImage } from "@/lib/cloudinary";
-import prisma from "@/lib/generated/prisma"; // Adjust path to your generated Prisma client
-
+import prisma from "@/lib/prisma";
 import { deleteImages } from "@/lib/cloudinary";
 
 export async function POST(request) {

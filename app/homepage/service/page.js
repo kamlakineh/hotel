@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import Image from "next/image";
 
 export default function Service() {
   const [datarooms, setDatarooms] = useState([]);
@@ -25,7 +24,7 @@ export default function Service() {
         <p className="absolute text-[100px] font-bold text-gray-900 top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2">
           Room Service
         </p>
-        <Image
+        <img
           className="h-[440px] opacity-70 w-full"
           src="/image/hotel/hol4.jpeg"
           alt="Blog banner"
@@ -39,8 +38,7 @@ export default function Service() {
           {datarooms.map((room) => (
             <div key={room.id}>
               <ul className="overflow-hidden w-100 flex flex-col gap-y-[10px] text-[20px] p-[15px] bg-gray-300 shadow-gray-900 shadow-2xl">
-                <Image
-                  alt=""
+                <img
                   src={room.roomImage1}
                   className="hover:scale-125 duration-[1500ms]"
                 />
@@ -60,7 +58,7 @@ export default function Service() {
                   href={`/homepage/service/${room.id}`}
                   className="text-white bg-gray-950 py-2 px-2"
                 >
-                  view detail
+                  view detail &gt;
                 </Link>
               </ul>
             </div>

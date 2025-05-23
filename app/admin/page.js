@@ -9,7 +9,6 @@ import { Custemers } from "./admincompent/custem";
 import { Profiles } from "./admincompent/profile";
 import { useRouter } from "next/navigation";
 import Loader from "@/constants/loading";
-import Image from "next/image";
 
 export default function Admin() {
   const [buttonview, setButtonview] = useState("");
@@ -40,7 +39,7 @@ export default function Admin() {
   }
   useEffect(() => {
     fetchdata();
-  }, [fetchdata]);
+  }, []);
 
   async function handlelogout() {
     sessionStorage.removeItem("isAuthenticated");
@@ -111,8 +110,7 @@ export default function Admin() {
             key={i}
             className="flex gap-x-[10px] items-center justify-center"
           >
-            <Image
-              alt=""
+            <img
               src={profile.image}
               className="h-[40px] w-[40px] rounded-full"
             />
@@ -131,7 +129,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            home
+            &lt;
           </button>
           <AddRoom />
         </div>
@@ -142,7 +140,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            home
+            &lt;
           </button>
           <Rooms />
         </div>
@@ -153,7 +151,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            home
+            &lt;
           </button>
           <Foods />
         </div>
@@ -164,7 +162,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            home
+            &lt;
           </button>
           <Custemers />
         </div>
@@ -175,7 +173,7 @@ export default function Admin() {
             onClick={() => setButtonview("")}
             className="font-bold text-[30px] w-[40px] h-[40px] text-center text-white absolute top-[9px] rounded-full left-[10px] bg-gray-600 hover:bg-gray-900"
           >
-            home
+            &lt;
           </button>
           <Profiles />
         </div>

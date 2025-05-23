@@ -12,7 +12,7 @@ export default function useBlogForm() {
 
   useEffect(() => {
     fetchBlogs();
-  }, [fetchBlogs]);
+  }, []);
 
   async function fetchBlogs() {
     try {

@@ -4,7 +4,7 @@ import Prem from "@/constants/prem";
 import Head from "next/head";
 import { useState, useEffect, useRef, use } from "react";
 import { io } from "socket.io-client";
-import Image from "next/image";
+
 export default function Hotel({ params }) {
   const [rooms, setRooms] = useState([]);
   const [custem, setCustem] = useState([]);
@@ -38,8 +38,7 @@ export default function Hotel({ params }) {
   }
   useEffect(() => {
     fetchdata();
-  }, [fetchdata]);
-
+  }, []);
   useEffect(() => {
     messagesEndRef1.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
@@ -133,7 +132,7 @@ export default function Hotel({ params }) {
               key={i}
               className="w-full h-40 bg-gray-300 rounded-lg overflow-hidden flex justify-center items-center"
             >
-              <Image
+              <img
                 src={rooms[0]?.[`roomImage${i}`]}
                 alt={`Hotel Image ${i}`}
                 width={300}

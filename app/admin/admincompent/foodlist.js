@@ -1,7 +1,7 @@
 "use client";
 import useBlogForm from "@/hook/useBlogForm";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+
 export function Foods() {
   const [entries, setEntries] = useState([]);
   const {
@@ -29,7 +29,8 @@ export function Foods() {
   }
   useEffect(() => {
     fetchdata();
-  }, [fetchdata]);
+    console.log(entries);
+  }, []);
 
   async function handleDelete(userId) {
     const res = await fetch("/api/blog", {
@@ -77,13 +78,13 @@ export function Foods() {
               className="border-1 border-gray-500 p-2 text-white w-full"
             >
               {blog.image && (
-                <Image src={blog.image} width={200} height={200} alt="Blog" />
+                <img src={blog.image} width={200} height={200} alt="Blog" />
               )}
               <p
                 className="text-[30px] cursor-pointer"
                 onClick={() => handlelistdown(blog.id)}
               >
-                {blog.titel}
+                "{blog.titel}"
               </p>
               <p className="text-[15px] text-justify break-words">
                 {blog.detail}

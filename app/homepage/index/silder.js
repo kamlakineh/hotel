@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import Image from "next/image";
+
 export default function Slider() {
   const [indexs, setIndexs] = useState(0);
   const [datarooms, setDatarooms] = useState([]);
@@ -59,7 +59,7 @@ export default function Slider() {
                   onMouseLeave={() => setHoverIndex(null)}
                 >
                   {/* First Image */}
-                  <Image
+                  <img
                     src={room.roomImage1}
                     alt="image1"
                     className="w-full h-full object-cover p-5"
@@ -75,7 +75,7 @@ export default function Slider() {
                         : "translate-y-full opacity-0"
                     }`}
                   >
-                    <Image
+                    <img
                       src={room.roomImage2}
                       alt="image2"
                       className="w-full h-full object-cover"
@@ -97,13 +97,13 @@ export default function Slider() {
           onClick={prevSlide}
           className="absolute top-[50%] left-[20px] transform -translate-y-1/2 font-bold text-4xl text-gray-600 p-3 bg-white rounded-full shadow-md hover:bg-gray-300 transition"
         >
-          prev
+          &lt;
         </button>
         <button
           onClick={nextSlide}
           className="absolute top-[50%] right-[20px] transform -translate-y-1/2 font-bold text-4xl text-gray-600 p-3 bg-white rounded-full shadow-md hover:bg-gray-300 transition"
         >
-          next
+          &gt;
         </button>
       </div>
     </div>
